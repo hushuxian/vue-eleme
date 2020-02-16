@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+      <child-component>
+        <template slot="top">占用top插槽的位置，可以定义自己的内容,没有内容时显示插槽内容</template>
+        <template>——————分割线——————</template>
+      </child-component>
+      <scope-component >
+        <template scope="props">
+          {{props.value}}
+        </template>
+      </scope-component>
+  </div>
+</body>
+<script src="../../node_modules/vue/dist/vue.js"></script>
+<script >
+  var child = {
+    template:`<div>
+    <slot name="top">头部插槽内容</slot>
+    <slot><p>分割线插槽内容</p></slot>
+    <slot name="bottom"><p>底部插槽内容</p></slot>
+    </div>`,
+  }
+  var scope = {
+    template:`<div>
+      <slot v-for="value in list" :value=value></slot>
+    </div>`,
+    data:function(){
+      return{
+        list:[1,2,3,4]
+      }
+    }
+  }
+  new Vue({
+    el:"#app",
+    components:{
+      'child-component':child,
+      'scope-component':scope
+    }
+    
+  })
+</script>
+</html>
