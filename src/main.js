@@ -2,12 +2,14 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueScroller from "vue-scroller"
-
+import ElementUI from 'element-ui'
 import App from './App'
 import router from './router'
 import "./mock/mockServer"
 import './common/stylus/fonts.styl'
+import '@/lib/util.js'
 
+Vue.use(ElementUI)
 Vue.use(VueScroller)
 
 Vue.filter('date-string',function(value){

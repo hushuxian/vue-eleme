@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="x"></div>
+  <div id="y"></div>
+</body>
+<script>
+  class Depend{
+    constructor() {
+        this.fns = new Set();
+    }
+    /*fns = new Set();*/
+    listen(){
+      if(active){
+        this.fns.add(active);
+        active = null;
+      }
+    }
+    notify(){
+      this.fns.forEach(fn=>fn())
+    }
+  }
+
+
+  let active = null;
+  let  ref = initValue => {
+      let value = initValue;
+      let dep;
+      return Object.defineProperty({},'value',{
+        get(){
+          if(!dep){
+            dep = new Depend();
+            dep.listen();
+          }
+          return value;
+        },
+        set(v){
+          value = v;
+          dep.notify();
+        }
+  
+      })
+    }
+
+  let changeX= (cb)=>{
+    active = cb;
+    active();
+  }
+  let x = ref(1);
+  changeX(()=>{
+    document.querySelector("#x").innerHTML = x.value;//f(x.value);
+  })
+
+  x.value = 2;
+
+
+  let changeY = (cb)=>{
+    active = cb;
+    active();
+  }
+  let y = ref(3);
+  changeY(()=>{
+    document.querySelector("#y").innerHTML = y.value;//f(x.value);
+  })
+
+</script>
+</html>
